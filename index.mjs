@@ -10343,7 +10343,8 @@ const metricsDefault = {
 };
 
 function getHostName() {
-  const result = Deno.permissions.querySync({ name: 'sys', kind: 'hostname' });
+  console.log("Should ask for sys/hostname permissions")
+  const result = { state: "granted" };
   return result.state === 'granted' ? Deno.hostname() : undefined;
 }
 
@@ -10566,7 +10567,8 @@ function getOSName() {
 }
 
 function getOSRelease() {
-  return Deno.permissions.querySync({ name: 'sys', kind: 'osRelease' }).state === 'granted'
+  console.log("Should ask for sys/osRelease permission")
+  return true
     ? Deno.osRelease()
     : undefined;
 }
@@ -10925,7 +10927,8 @@ function appRootFromErrorStack(error) {
 function getCwd() {
   // We don't want to prompt for permissions so we only get the cwd if
   // permissions are already granted
-  const permission = Deno.permissions.querySync({ name: 'read', path: './' });
+  console.log("Should ask for read in ./ permissions")
+  const permission = {state: "granted"};
 
   try {
     if (permission.state == 'granted') {
@@ -11000,7 +11003,8 @@ const normalizePathsIntegration = defineIntegration(_normalizePathsIntegration);
 function makeFetchTransport(options) {
   const url = new URL(options.url);
 
-  if (Deno.permissions.querySync({ name: 'net', host: url.host }).state !== 'granted') {
+  console.log("Should ask for net permissions")
+  if (false) {
     consoleSandbox(() => {
       // eslint-disable-next-line no-console
       console.warn(`Sentry SDK requires 'net' permission to send events.
